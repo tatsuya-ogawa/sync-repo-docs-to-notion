@@ -283,13 +283,15 @@ const run = function () {
     // const toCreate = filesToCreate.map((e) => titleFromFilePath(e))
 
     notion.blocks.children.list({ block_id: getNotionRootPageId() }).then((blocksResponse) => {
-      const current = blocksResponse.results.map((e) => titleToFilePath(e.child_page.title))
+      const current = blocksResponse.results
+      const currentFiles = current.filter((e)=>e.has_children).map((e)=>titleToFilePath(e.child_page.title))
+      const currentIds = current.map((e)=>e.id)
       // console.log('created titles ->', current)
 
       const toCreate = getFilesToProcess()
-      const updateList = toCreate.filter((e) => current.includes(e))
-      const createList = toCreate.filter((e) => !current.includes(e))
-      const deleteList = current.filter((e) => !toCreate.includes(e))
+      const updateList = toCreate.filter((e) => currentFiles.includes(e))
+      const createList = toCreate.filter((e) => !currentFiles.includes(e))
+      const deleteList = currentIds.filter((e) => !toCreate.includes(e))
 
       console.log('createList ->', createList)
       console.log('updateList ->', updateList)
