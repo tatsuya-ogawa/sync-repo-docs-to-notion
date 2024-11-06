@@ -291,6 +291,7 @@ const run = function () {
       const updateList = toCreate.filter((e) => currentFiles.includes(e))
       const createList = toCreate.filter((e) => !currentFiles.includes(e))
       const deleteList = current.filter((e) => !toCreate.includes(e.child_page && titleToFilePath(e.child_page.title))).map((e) => e.id)
+      
       console.log('createList ->', createList)
       console.log('updateList ->', updateList)
       console.log('deleteList ->', deleteList)
